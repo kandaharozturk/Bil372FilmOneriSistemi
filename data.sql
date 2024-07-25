@@ -1,36 +1,36 @@
-insert into Kullanici
-values('1111111','example@mail.com','password','username','name','surname');
+insert into Kullanici (mail,Sifre,KullaniciAdi,Adi,Soyadi)
+values('example@mail.com','password','username','name','surname');
 
-insert into Film
-values('121212','movie','exp',3,9);
+insert into Kullanici (mail,Sifre,KullaniciAdi,Adi,Soyadi)
+values('example@mail.com','password','username1','name','surname');
+
+insert into Film(ad,filmaciklamasi,puan,populerlik)
+values('movie','exp',3,9);
 
 insert into Oyuncular 
-values('121212','starName');
+values(1,'starName');
 
 insert into PopulerFilmListesi
-values('121212');
+values(1);
 
 insert into OneriFilmListesi
-values('1111111','121212');
+values(1,1);
 
 insert into Icerir
-values('1111111','121212');
+values(2,1);
 
 insert into Genre
 values('genreName');
 
 insert into Aittir
-values('121212','genreName');
+values(1,'genreName');
 
 insert into Begenir
-values('1111111','121212','2024-01-01');
+values(2,1,now());
 
 insert into Izler
-values('1111111','121212','2024-01-01');
+values(1,1,now());
 
 insert into TercihEder
-values('1111111','genreName');
-
-
-
+values(2,'genreName');
 

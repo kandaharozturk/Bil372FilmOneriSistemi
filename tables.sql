@@ -1,18 +1,15 @@
-create database FilmVeritabani;
-
-
 create table Kullanici(
-	KullaniciID varchar(20) not NULL,
+	KullaniciID SERIAL not null,
 	Mail varchar(50) not NULL,
 	Sifre varchar(20) not NULL,
-	KullaniciAdi varchar(20) not NULL,
+	KullaniciAdi varchar(20) not null unique,
 	Adi varchar(20) not NULL,
 	Soyadi varchar(20) not NULL,
 	primary KEY(KullaniciID)
 );
 
 create table Film(
-	FilmID varchar(20) not NULL,
+	FilmID SERIAL not NULL,
 	Ad varchar(50) not NULL,
 	FilmAciklamasi varchar(255),
 	Puan int,
@@ -21,21 +18,22 @@ create table Film(
 );
 
 create table Oyuncular(
-	FilmID varchar(20) not NULL,
+	FilmID int not NULL,
 	Oyuncu varchar(50) not NULL,
 	primary key(FilmID,Oyuncu),
 	foreign key(FilmID) references Film(FilmID)
 );
 
+
 create table PopulerFilmListesi(
-	FilmID varchar(20) not NULL,
+	FilmID int not NULL,
 	primary key(FilmID),
 	foreign key(FilmID) references Film(FilmID)
 );
 
 create table OneriFilmListesi(
-	KullaniciID varchar(20) not NULL,
-	FilmID varchar(20) not NULL,
+	KullaniciID int not NULL,
+	FilmID int not NULL,
 	primary key(KullaniciID,FilmID),
 	foreign key(KullaniciID) references Kullanici(KullaniciID),
 	foreign key(FilmID) references Film(FilmID)
@@ -43,8 +41,8 @@ create table OneriFilmListesi(
 
 
 create table Icerir(
-	KullaniciID varchar(20) not NULL,
-	FilmID varchar(20) not NULL,
+	KullaniciID int not NULL,
+	FilmID int not NULL,
 	primary key(KullaniciID,FilmID),
 	foreign key(KullaniciID) references Kullanici(KullaniciID),
 	foreign key(FilmID) references Film(FilmID)
@@ -56,7 +54,7 @@ create table Genre(
 );
 
 create table TercihEder(
-	KullaniciID varchar(20) not NULL,
+	KullaniciID int not NULL,
 	GenreAdi varchar(20) not NULL,
 	primary key(KullaniciID,GenreAdi),
 	foreign key(KullaniciID) references Kullanici(KullaniciID),
@@ -64,8 +62,8 @@ create table TercihEder(
 );
 
 create table Izler(
-	KullaniciID varchar(20) not NULL,
-	FilmID varchar(20) not NULL,
+	KullaniciID int not NULL,
+	FilmID int not NULL,
 	IzlemeTarihi date not NULL,
 	primary key(KullaniciID,FilmID),
 	foreign key(KullaniciID) references Kullanici(KullaniciID),
@@ -73,8 +71,8 @@ create table Izler(
 );
 
 create table Begenir(
-	KullaniciID varchar(20) not NULL,
-	FilmID varchar(20) not NULL,
+	KullaniciID int not NULL,
+	FilmID int not NULL,
 	BegenmeTarihi date not NULL,
 	primary key(KullaniciID,FilmID),
 	foreign key(KullaniciID) references Kullanici(KullaniciID),
@@ -82,13 +80,9 @@ create table Begenir(
 );
 
 create table Aittir(
-	FilmID varchar(20) not NULL,
+	FilmID int not NULL,
 	GenreAdi varchar(20) not NULL,
 	primary key(FilmID,GenreAdi),
 	foreign key(FilmID) references Film(FilmID),
 	foreign key(GenreAdi) references Genre(GenreAdi)
 );
-
-
-
-
