@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "982801002936",
+    "project_id": "imdbms-50c27",
+    "storage_bucket": "imdbms-50c27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982801002936:android:756ce385f652cac8529f4d",
+        "android_client_info": {
+          "package_name": "com.example.imdbms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "982801002936-v9vnfhonhu42datoffl79li9mfabupev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcLOes8LAk4EZvu09-FnZcZTQVrez8EVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982801002936-v9vnfhonhu42datoffl79li9mfabupev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
