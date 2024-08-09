@@ -58,7 +58,7 @@ class UserProfile extends StatelessWidget {
                               child: Column(
                             children: [
                               Text(
-                                "Tercih Edilen Genrelar",
+                                "Preffered Genres",
                                 style: TextStyle(fontSize: 20),
                               ),
                               Divider(
@@ -72,7 +72,7 @@ class UserProfile extends StatelessWidget {
                             user?.tercihEdilenGenrelar?.length ?? 0, (index) {
                           return GenreBox(
                               genre: user?.tercihEdilenGenrelar?[index] ??
-                                  "isimsiz genre");
+                                  "unnamed genre");
                         }),
                       )
                     ],
@@ -93,7 +93,7 @@ class UserProfile extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Text(
-                                      "İzlenen Filmler",
+                                      "Wathced Films",
                                       style: TextStyle(fontSize: 24),
                                     ),
                                     Divider(
@@ -103,26 +103,24 @@ class UserProfile extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              Container(
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: List.generate(
-                                        user?.izlenenFilmler?.length ?? 0,
-                                        (index) {
-                                      return MovieCard(
-                                          showIcons: false,
-                                          filmID: user?.izlenenFilmler?[index]
-                                                  ?.filmID ??
-                                              -1,
-                                          name: user?.izlenenFilmler?[index]
-                                                  ?.ad ??
-                                              "adsiz",
-                                          point: user?.izlenenFilmler?[index]
-                                                  ?.puan ??
-                                              -1);
-                                    }),
-                                  ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: List.generate(
+                                      user?.izlenenFilmler?.length ?? 0,
+                                      (index) {
+                                    return MovieCard(
+                                        showIcons: false,
+                                        filmID: user?.izlenenFilmler?[index]
+                                                ?.filmID ??
+                                            -1,
+                                        name:
+                                            user?.izlenenFilmler?[index]?.ad ??
+                                                "adsiz",
+                                        point: user?.izlenenFilmler?[index]
+                                                ?.puan ??
+                                            -1);
+                                  }),
                                 ),
                               ),
                               Gap(20),
@@ -137,7 +135,7 @@ class UserProfile extends StatelessWidget {
                                         child: Column(
                                           children: [
                                             Text(
-                                              "Beğenilen Filmler",
+                                              "Liked Films",
                                               style: TextStyle(fontSize: 24),
                                             ),
                                             Divider(

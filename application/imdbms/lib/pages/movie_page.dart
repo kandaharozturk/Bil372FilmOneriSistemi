@@ -20,6 +20,8 @@ class _MoviePageState extends State<MoviePage> {
   @override
   Widget build(BuildContext context) {
     final filmID = ModalRoute.of(context)!.settings.arguments as int?;
+    // print()
+    print("filmID: " + filmID.toString());
     final Color yelloish = Colors.yellow.shade200;
     late Film? film;
     late List<DigerKullanici>? digerKullanicilar;

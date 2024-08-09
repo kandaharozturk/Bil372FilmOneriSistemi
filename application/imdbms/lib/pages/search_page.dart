@@ -40,7 +40,7 @@ class SearchPage extends StatelessWidget {
                 children: [
                   Gap(8),
                   Text(
-                    "${searchedFilms.length.toString()} film bulundu.",
+                    "${searchedFilms.length.toString()} films found.",
                     style: TextStyle(fontSize: 16),
                   ),
                   Expanded(
