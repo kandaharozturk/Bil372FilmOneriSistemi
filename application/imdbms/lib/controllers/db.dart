@@ -120,10 +120,12 @@ AND f.FilmID NOT IN (
     WHERE b2.kullaniciid = :userID)""", {"userID": userID});
       List<Film> recommendedFilms = List.empty(growable: true);
       for (var film in result.rows) {
+        print(film.assoc()["filmID"]);
         recommendedFilms.add(await getFilmInfo(
                 int.parse(film.assoc()["filmID"] ?? "0"), userID) ??
             Film());
       }
+      print(recommendedFilms[0].filmID);
       return recommendedFilms;
     } catch (e) {
       print("-----------> " + e.toString());
@@ -143,7 +145,7 @@ WHERE b.kullaniciid IN (
     WHERE t.genreadi IN (
         SELECT t.genreadi
         FROM terciheder t
-        WHERE t.kullaniciid = 1
+        WHERE t.kullaniciid = :userID
     )
     GROUP BY k.kullaniciid
     HAVING COUNT(k.kullaniciid) > 2
@@ -219,6 +221,7 @@ AND f.ad NOT IN (
       var oyuncular = await db!.execute(
           "select distinct Oyuncu from Oyuncular where FilmID = :filmID",
           {"filmID": filmID});
+
       List<String> oyuncuList = List.empty(growable: true);
       for (var oyuncu in oyuncular.rows) {
         Map<String, String?> val = oyuncu.assoc();
@@ -234,11 +237,12 @@ AND f.ad NOT IN (
         genreList.add(val.values.elementAt(0) ?? "unnamed genre");
       }
       var response = await db!.execute(
-          "select p.filmID, f.ad, f.filmAciklamasi, f.populerlik, f.puan, (select izlemeTarihi from Izler where KullaniciID = :userID and FilmID = p.FilmID) as izlemeTarihi, Exists (select * from Begenir as b where b.KullaniciID = :userID and b.FilmID = p.FilmID) as begendiMi, Exists (select * from izler as i where i.KullaniciID = :userID and i.FilmID = p.FilmID) as izlediMi from OneriFilmListesi as p natural join film as f where p.filmID = :filmID order by f.populerlik desc",
+          "select distinct p.filmID, f.ad, f.filmAciklamasi, f.populerlik, f.puan, (select izlemeTarihi from Izler where KullaniciID = :userID and FilmID = p.FilmID) as izlemeTarihi, Exists (select * from Begenir as b where b.KullaniciID = :userID and b.FilmID = p.FilmID) as begendiMi, Exists (select * from izler as i where i.KullaniciID = :userID and i.FilmID = p.FilmID) as izlediMi from izler as p natural join film as f where p.filmID = :filmID order by f.populerlik desc",
           {"userID": userID, "filmID": filmID});
 
       var film = response.rows.first;
       Map<String, String?> val = film.assoc();
+      print("abc");
       Film temp = Film(
           ad: val.values.elementAt(1),
           filmID: int.parse(val.values.elementAt(0) ?? "-1"),
