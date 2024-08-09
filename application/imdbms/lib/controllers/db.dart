@@ -96,6 +96,77 @@ class DB {
     }
   }
 
+  Future<List<Film>?> setRecommendedFilms2(int userID) async {
+    print("başladı");
+    try {
+      var result = await db!.execute("""SELECT DISTINCT f.filmID
+FROM film f
+JOIN begenir b ON f.FilmID = b.FilmID
+WHERE b.kullaniciid IN (
+    SELECT DISTINCT k.kullaniciid
+    FROM kullanici k
+    JOIN begenir b ON k.kullaniciid = b.kullaniciid
+    WHERE b.filmid IN (
+        SELECT b.filmid
+        FROM begenir b
+        JOIN kullanici k ON b.kullaniciid = k.kullaniciid
+        WHERE k.kullaniciid = :userID
+    )
+)
+AND f.FilmID NOT IN (
+    SELECT f2.FilmID
+    FROM film f2
+    JOIN begenir b2 ON f2.FilmID = b2.FilmID
+    WHERE b2.kullaniciid = :userID)""", {"userID": userID});
+      List<Film> recommendedFilms = List.empty(growable: true);
+      for (var film in result.rows) {
+        recommendedFilms.add(await getFilmInfo(
+                int.parse(film.assoc()["filmID"] ?? "0"), userID) ??
+            Film());
+      }
+      return recommendedFilms;
+    } catch (e) {
+      print("-----------> " + e.toString());
+    }
+    print("bitti");
+  }
+
+  Future<List<Film>?> setRecommendedFilms1(int userID) async {
+    try {
+      var result = await db!.execute("""SELECT DISTINCT f.filmID
+FROM film f
+JOIN begenir b ON f.FilmID = b.FilmID
+WHERE b.kullaniciid IN (
+    SELECT k.kullaniciid
+    FROM kullanici k
+    JOIN terciheder t ON k.kullaniciid = t.kullaniciid
+    WHERE t.genreadi IN (
+        SELECT t.genreadi
+        FROM terciheder t
+        WHERE t.kullaniciid = 1
+    )
+    GROUP BY k.kullaniciid
+    HAVING COUNT(k.kullaniciid) > 2
+)
+AND f.ad NOT IN (
+    SELECT f2.ad
+    FROM film f2
+    JOIN begenir b2 ON f2.FilmID = b2.FilmID
+    WHERE b2.kullaniciid = :userID)""", {"userID": userID});
+      List<Film> recommendedFilms = List.empty(growable: true);
+      for (var film in result.rows) {
+        print(film.assoc()["filmID"]);
+        recommendedFilms.add(await getFilmInfo(
+                int.parse(film.assoc()["filmID"] ?? "0"), userID) ??
+            Film());
+      }
+
+      return recommendedFilms;
+    } catch (e) {
+      print("--------> " + e.toString());
+    }
+  }
+
   Future<List<Film>?> getRecommendedFilms(int userID) async {
     try {
       var result = await db!.execute(
@@ -146,13 +217,14 @@ class DB {
   Future<Film?> getFilmInfo(int filmID, int userID) async {
     try {
       var oyuncular = await db!.execute(
-          "select Oyuncu from Oyuncular where FilmID = :filmID",
+          "select distinct Oyuncu from Oyuncular where FilmID = :filmID",
           {"filmID": filmID});
       List<String> oyuncuList = List.empty(growable: true);
       for (var oyuncu in oyuncular.rows) {
         Map<String, String?> val = oyuncu.assoc();
         oyuncuList.add(val.values.elementAt(0) ?? "unnamed");
       }
+
       var genre = await db!.execute(
           "select genreAdi from Aittir where FilmID = :filmID",
           {"filmID": filmID});
@@ -180,7 +252,7 @@ class DB {
           oyuncular: oyuncuList);
       return temp;
     } catch (e) {
-      print("hataa $e");
+      print("hataffa $e");
     }
   }
 
@@ -269,6 +341,16 @@ class DB {
       return begenilenFilmler;
     } catch (e) {
       print("couldnt get liked films: $e");
+    }
+  }
+
+  Future<void> addGPrefferedGenre(int userID, String genreAdi) async {
+    try {
+      var reponse = await db!.execute(
+          "insert into terciheder values(:userID,:genreAdi);",
+          {"userID": userID, "genreAdi": genreAdi});
+    } catch (e) {
+      print("couldnt get genres: $e");
     }
   }
 

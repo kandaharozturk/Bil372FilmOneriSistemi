@@ -27,7 +27,7 @@ class MovieCard extends StatelessWidget {
     return InkWell(
       hoverColor: const Color.fromARGB(46, 158, 158, 158),
       splashColor: Colors.transparent,
-      onDoubleTap: () async =>
+      onTap: () async =>
           await Navigator.pushNamed(context, "/movie", arguments: filmID),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -78,11 +78,13 @@ class MovieCard extends StatelessWidget {
                 ),
               ),
               Gap(2),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 2),
-                child: AutoSizeText(
-                  maxLines: 2,
-                  name,
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 2),
+                  child: AutoSizeText(
+                    maxLines: 2,
+                    name,
+                  ),
                 ),
               ),
             ],

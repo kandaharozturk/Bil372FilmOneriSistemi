@@ -37,7 +37,7 @@ class MyAppBar extends StatelessWidget {
                         overlayColor:
                             WidgetStatePropertyAll(Colors.transparent),
                         controller: controller,
-                        hintText: "Film arayın...",
+                        hintText: "Search Film...",
                         hintStyle: WidgetStatePropertyAll(
                             TextStyle(color: Colors.grey.shade900)),
                       ),

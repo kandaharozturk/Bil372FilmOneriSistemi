@@ -21,7 +21,12 @@ class HomePage extends StatelessWidget {
   Future<void> setPopularAndRecommendedFilms() async {
     popularFilms = await db.getPopularFilms(db.userID ?? -1) ?? List.empty();
     recommendedFilms =
-        await db.getRecommendedFilms(db.userID ?? -1) ?? List.empty();
+        await db.setRecommendedFilms1(db.userID ?? -1) ?? List.empty();
+
+    if (recommendedFilms.isEmpty) {
+      recommendedFilms =
+          await db.setRecommendedFilms2(db.userID ?? -1) ?? List.empty();
+    }
   }
 
   @override
@@ -58,7 +63,7 @@ class HomePage extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            "Popüler Filmler",
+                            "Popular Films",
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineLarge!
@@ -84,7 +89,7 @@ class HomePage extends StatelessWidget {
                               popularFilms.length,
                               (index) => MovieCard(
                                     filmID: popularFilms[index].filmID ?? -1,
-                                    name: popularFilms[index].ad ?? "isimsiz",
+                                    name: popularFilms[index].ad ?? "unnamed",
                                     point: popularFilms[index].puan ?? -1,
                                     like:
                                         popularFilms[index].begendiMi ?? false,
@@ -96,11 +101,11 @@ class HomePage extends StatelessWidget {
                     ),
                     Gap(40),
                     Container(
-                      width: 280,
+                      width: 320,
                       child: Column(
                         children: [
                           Text(
-                            "Önerilen Filmler",
+                            "Recommended Films",
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineLarge!
@@ -128,7 +133,7 @@ class HomePage extends StatelessWidget {
                                     filmID:
                                         recommendedFilms[index].filmID ?? -1,
                                     name:
-                                        recommendedFilms[index].ad ?? "isimsiz",
+                                        recommendedFilms[index].ad ?? "unnamed",
                                     point: recommendedFilms[index].puan ?? -1,
                                     like: recommendedFilms[index].begendiMi ??
                                         false,
